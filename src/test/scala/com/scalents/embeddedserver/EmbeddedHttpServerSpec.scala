@@ -9,20 +9,20 @@ import akka.stream.scaladsl.Sink
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Seconds, Span}
 import org.scalatest.{FlatSpec, Matchers}
+import com.scalents.embeddedserver.EmbeddedHttpServer._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class EmbeddedHttpServerSpec extends FlatSpec with Matchers with EmbeddedHttpServer with ScalaFutures {
+class EmbeddedHttpServerSpec extends FlatSpec with Matchers with ScalaFutures {
 
   implicit val aSys: ActorSystem = ActorSystem("test")
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
 
   implicit val defaultPatience: PatienceConfig = PatienceConfig(timeout = Span(120000, Seconds), interval = Span(15, Millis))
 
 
   "The embedded server" should "respond with hello" in {
-    val routes = path("hi") { get { complete("Hello")} }
-    withEmbeddedServer(inPort = 8989)(routes){
+    withEmbeddedServer(port = 8989, routes = path("hi") { get { complete("Hello")} }){
 
       val result = Http().singleRequest(HttpRequest(uri = Uri("http://localhost:8989/hi"))).futureValue
       val HttpResponse(StatusCodes.OK, _, entity, _) = result
