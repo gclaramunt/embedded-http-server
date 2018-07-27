@@ -24,7 +24,7 @@ That's it :)
 
 ## A simple example
 
-( See [EmbeddedHttpServerSpec.scala] (./src/test/scala/com/scalents/embeddedserver/EmbeddedHttpServerSpec.scala))
+( See [EmbeddedHttpServerSpec.scala](./src/test/scala/com/scalents/embeddedserver/EmbeddedHttpServerSpec.scala) )
 
 Let's create an embedded server that responds with "Hello" when we do a http GET on port 8989 and validate the response
 
